@@ -1,0 +1,52 @@
+{% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/include/site_footer.css' %}" />
+
+<footer class="site-footer">
+    <div class="site-footer-inner">
+        <div class="site-footer-grid">
+            <div>
+                <h3 class="site-footer-brand">Shop</h3>
+                <p class="site-footer-copy">
+                    Premium essentials for everyday living — thoughtful design, quality products, and a seamless shopping experience.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="site-footer-title">Shop</h4>
+                <div class="site-footer-links">
+                    <a href="{% url 'product_list' %}">New arrivals</a>
+                    <a href="{% url 'product_list' %}">Best sellers</a>
+                    <a href="{% url 'product_list' %}">Categories</a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="site-footer-title">Support</h4>
+                <div class="site-footer-links">
+                    <a href="{% url 'profile' %}">My account</a>
+                    <a href="{% url 'address_list' %}">Shipping info</a>
+                    <a href="{% url 'cart_detail' %}">Cart</a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="site-footer-title">Follow us</h4>
+                <div class="site-footer-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">X / Twitter</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="site-footer-bottom">
+            <span>© 2026 Shop. All rights reserved.</span>
+            <div class="site-footer-badges">
+                <span class="site-footer-badge">Secure payments</span>
+                <span class="site-footer-badge">Fast shipping</span>
+                <span class="site-footer-badge">Support</span>
+            </div>
+        </div>
+    </div>
+</footer>

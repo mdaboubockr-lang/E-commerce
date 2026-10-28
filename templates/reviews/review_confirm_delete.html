@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete review | Shop</title>
+    <link rel="stylesheet" href="{% static 'css/reviews/reviews_confirm.css' %}" />
+</head>
+
+<body>
+    <main class="page">
+        <section class="panel">
+            <h1>Delete this review?</h1>
+            <p>This action cannot be undone.</p>
+            <form class="actions" method="post">
+                {% csrf_token %}
+                <button type="submit">Delete review</button>
+                <a class="cancel" href="{% url 'product_detail' pk=review.product.pk %}">Cancel</a>
+            </form>
+        </section>
+    </main>
+</body>
+
+</html>

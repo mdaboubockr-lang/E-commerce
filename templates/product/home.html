@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FreshMart | Fresh Groceries{% endblock %}
+{% block content %}
+<main class="container home-page">
+  <div class="home-layout">
+    <aside class="category-sidebar">
+      <div class="sidebar-title">☰ <span>All Categories</span><b>⌄</b></div>
+      {% for category in categories %}
+        <a href="{% url 'category_shop' category.slug %}"><span>◉</span>{{ category.category_name }}</a>
+      {% endfor %}
+      <a class="more" href="{% url 'product_list' %}">♡ More Categories</a>
+    </aside>
+    <section class="home-main">
+      <div class="hero">
+        <img src="{% static 'images/freshmart/hero-grocery.jpg' %}" alt="Fresh groceries in a basket">
+        <div class="hero-overlay"><span>100% FRESH</span><h1>Fresh Groceries<br>Delivered to Your<br>Doorstep</h1><p>Save time. Save money. Eat fresh!</p><a href="{% url 'product_list' %}">Shop Now →</a></div>
+      </div>
+      <div class="service-row">
+        <div><b>▣ Free Delivery</b><small>On orders over ৳299</small></div><div><b>◷ 30 Minutes Delivery</b><small>Lightning fast</small></div><div><b>◇ Best Prices</b><small>Shop & save more</small></div><div><b>✓ Secure Payment</b><small>100% secure</small></div><div><b>♧ 24/7 Support</b><small>We're here to help</small></div>
+      </div>
+      <div class="section-head"><h2>Shop by Category</h2><a href="{% url 'product_list' %}">View All →</a></div>
+      <div class="category-grid">
+        {% for item in category_cards %}
+        <a href="{% url 'category_shop' item.slug %}" class="category-card"><img src="{% static item.image %}" alt="{{ item.name }}"><b>{{ item.name }}</b></a>
+        {% endfor %}
+      </div>
+      <div class="promo-grid">
+        <a href="{% url 'category_shop' 'fruits-vegetables' %}"><img src="{% static 'images/freshmart/promo-fruits.jpg' %}" alt="Fruits and vegetables offer"></a>
+        <a href="{% url 'category_shop' 'staples' %}"><img src="{% static 'images/freshmart/promo-essentials.jpg' %}" alt="Daily essentials offer"></a>
+        <a href="{% url 'category_shop' 'snacks-munchies' %}"><img src="{% static 'images/freshmart/promo-snacks.jpg' %}" alt="Snacks offer"></a>
+      </div>
+      <div class="section-head"><h2>Best Selling Products</h2><a href="{% url 'product_list' %}">View All →</a></div>
+      <div class="product-grid">
+        {% for item in product_cards %}
+        <article class="product-card">
+          <form method="post" action="{% url 'wishlist_toggle' item.product.pk %}" class="wish-form">{% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}"><button class="wish" type="submit">♡</button></form>
+          <a href="{% url 'product_detail' item.product.pk %}" class="product-image"><img src="{{ item.image }}" alt="{{ item.product.product_name }}"></a>
+          <span class="fresh-tag">Fresh</span>
+          <a href="{% url 'product_detail' item.product.pk %}" class="product-name">{{ item.product.product_name }}</a>
+          <div class="rating">★ <span>4.8 (120)</span></div>
+          <div class="product-bottom"><b>৳{{ item.product.price }}</b><a href="{% url 'product_detail' item.product.pk %}">Add to Cart</a></div>
+        </article>
+        {% empty %}<p>No products yet. Run <code>python manage.py seed_grocery</code>.</p>{% endfor %}
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

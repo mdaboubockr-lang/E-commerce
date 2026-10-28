@@ -1,0 +1,9 @@
+<footer class="footer" id="contact">
+  <div class="container footer-grid">
+    <div><div class="footer-brand">FreshMart</div><p>Fresh groceries, daily essentials and trusted brands delivered to your doorstep.</p></div>
+    <div><h4>Shop</h4><a href="{% url 'product_list' %}">All Products</a><a href="{% url 'product_list' %}">Best Sellers</a><a href="{% url 'cart_detail' %}">Cart</a></div>
+    <div><h4>Account</h4><a href="{% url 'profile' %}">My Profile</a><a href="{% url 'address_list' %}">Addresses</a><a href="{% url 'logout' %}">Logout</a></div>
+    <div><h4>Help</h4><a href="#contact">Delivery Info</a><a href="#contact">Returns</a><a href="#contact">Support</a></div>
+  </div>
+  <div class="footer-bottom">© {% now "Y" %} FreshMart. All rights reserved.</div>
+</footer>

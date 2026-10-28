@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FreshMart{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/freshmart/global.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="top-strip">
+        <span>🚚 Free Delivery on orders over ৳299</span>
+        <span>◷ 30 Minutes Delivery</span>
+        <span>♢ 100% Secure Payment</span>
+        <span>☎ Need Help? Call us: +880 1700 123 456</span>
+    </div>
+    <header class="site-header">
+        <div class="header-main container">
+            <a href="{% url 'home' %}" class="brand">
+                <span class="brand-logo">🛒</span>
+                <span><b>FreshMart</b><small>Fresh Choices, Healthier Lives</small></span>
+            </a>
+            <form class="search" method="get" action="{% url 'product_list' %}">
+                <input name="q" value="{{ search_query|default:'' }}" placeholder="Search for milk, apple, rice...">
+                <button aria-label="Search">⌕</button>
+            </form>
+            <div class="header-actions">
+                <div class="delivery"><span>⌖</span><small>Deliver to</small><b>Dhaka 1205</b></div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="header-action"><span>♙</span><small>Hello,</small><b>My Account</b></a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="header-action"><span>♙</span><small>Hello,</small><b>Sign In</b></a>
+                {% endif %}
+                <a href="{% url 'product_list' %}" class="header-action"><span>♡</span><small>Wishlist</small><b>My List</b></a>
+                <a href="{% url 'cart_detail' %}" class="header-action cart-action"><span>🛒<i>{{ cart_items|length|default:0 }}</i></span><small>Shopping</small><b>Cart</b></a>
+            </div>
+        </div>
+        <div class="nav-wrap">
+            <nav class="container nav">
+                <a href="{% url 'product_list' %}" class="all-cats">☰ <span>All Categories</span></a>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'product_list' %}">Shop</a>
+                <a href="{% url 'product_list' %}">Categories</a>
+                <a href="{% url 'product_list' %}?deal=1">Deals</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact Us</a>
+            </nav>
+        </div>
+    </header>
+    {% if messages %}
+    <div class="container flash-wrap">
+        {% for message in messages %}<div class="flash {{ message.tags }}">{{ message }}</div>{% endfor %}
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+    {% include 'includes/freshmart_footer.html' %}
+</body>
+</html>

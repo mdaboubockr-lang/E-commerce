@@ -1,0 +1,82 @@
+{% load static %}
+{% if user.is_authenticated %}
+    <link rel="stylesheet" href="{% static 'css/include/cart_sidebar.css' %}" />
+
+<div class="cart-drawer-backdrop{% if cart_open %} active{% endif %}" id="cartDrawerBackdrop"></div>
+<aside class="cart-drawer{% if cart_open %} open{% endif %}" id="cartDrawer" aria-live="polite">
+    <div class="cart-drawer-header">
+        <h2>Cart</h2>
+        <button type="button" class="cart-close-btn" id="closeCartBtn" aria-label="Close cart">Close</button>
+    </div>
+
+    {% if cart_items %}
+        <div class="cart-drawer-items">
+            {% for item in cart_items %}
+                <div class="cart-drawer-item">
+                    {% if item.variant.image %}
+                        <img class="cart-drawer-image" src="{{ item.variant.image.url }}" alt="{{ item.variant.product.product_name }}">
+                    {% else %}
+                        <div class="cart-drawer-image cart-drawer-placeholder">No image</div>
+                    {% endif %}
+                    <div class="cart-drawer-item-info">
+                        <p>{{ item.variant.product.product_name }}</p>
+                        <span>{{ item.quantity }} x ${{ item.variant.product.price }}</span>
+                    </div>
+                    <strong class="cart-drawer-price">${{ item.line_total }}</strong>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-drawer-footer">
+            <div class="cart-summary-row">
+                <span>Subtotal</span>
+                <strong>${{ cart_total }}</strong>
+            </div>
+            <a class="cart-checkout-btn" href="{% url 'cart_detail' %}">Go to cart</a>
+        </div>
+    {% else %}
+        <p class="cart-empty">Your cart is empty.</p>
+    {% endif %}
+</aside>
+
+<script>
+    (function () {
+        const drawer = document.getElementById('cartDrawer');
+        const backdrop = document.getElementById('cartDrawerBackdrop');
+        const closeBtn = document.getElementById('closeCartBtn');
+
+        function syncCartState(isOpen) {
+            if (!drawer) return;
+            drawer.classList.toggle('open', isOpen);
+            if (backdrop) {
+                backdrop.classList.toggle('active', isOpen);
+            }
+
+            const url = new URL(window.location.href);
+            if (isOpen) {
+                url.searchParams.set('cart_open', '1');
+            } else {
+                url.searchParams.delete('cart_open');
+            }
+            history.replaceState({}, '', url);
+        }
+
+        const shouldOpen = new URLSearchParams(window.location.search).get('cart_open') === '1';
+        if (shouldOpen) {
+            syncCartState(true);
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function () {
+                syncCartState(false);
+            });
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener('click', function () {
+                syncCartState(false);
+            });
+        }
+    })();
+</script>
+{% endif %}

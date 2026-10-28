@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.product_name }} | FreshMart{% endblock %}
+{% block content %}
+<main class="container shop-page">
+  <div class="breadcrumb"><a href="{% url 'home' %}">Home</a> / <a href="{% url 'category_shop' product.product_category.slug %}">{{ product.product_category.category_name }}</a> / {{ product.product_name }}</div>
+  {% if product %}
+  <section class="detail-card">
+    <div class="detail-gallery">
+      {% with image=product.product_image_set.first %}
+      {% if image and image.image %}<img class="detail-main-image" src="{{ image.image.url }}" alt="{{ product.product_name }}">{% else %}<img class="detail-main-image" src="/static/images/freshmart/product-banana.jpg" alt="{{ product.product_name }}">{% endif %}
+      {% endwith %}
+      <div class="detail-thumbs">{% for image in product.product_image_set.all %}<img src="{{ image.image.url }}" alt="">{% endfor %}</div>
+    </div>
+    <div class="detail-info">
+      <span class="detail-category">{{ product.product_category.category_name }}</span>
+      <h1>{{ product.product_name }}</h1>
+      <div class="detail-rating">★★★★★ <span>4.8 (120 reviews)</span></div>
+      <div class="detail-price">৳{{ product.price }}</div>
+      <p class="detail-desc">{{ product.description|default:'Fresh, quality product carefully selected for your everyday needs.' }}</p>
+      <div class="delivery-points"><span>✓ Fresh quality guaranteed</span><span>✓ Fast doorstep delivery</span><span>✓ Secure payment</span></div>
+      {% if product.productvariant_set.all %}
+      <div class="variant-box"><b>Choose option</b>{% for variant in product.productvariant_set.all %}<form method="post" action="{% url 'add_to_cart' %}" class="add-detail-form">{% csrf_token %}<input type="hidden" name="variant_id" value="{{ variant.pk }}"><input type="hidden" name="next" value="{{ request.path }}"><span>{{ variant.color }} · {{ variant.stock }} in stock</span><input type="number" name="quantity" value="1" min="1" max="{{ variant.stock }}"><button type="submit">Add to Cart</button></form>{% endfor %}</div>
+      {% endif %}
+      <a class="buy-now" href="{% url 'cart_detail' %}">Go to Cart →</a>
+    </div>
+  </section>
+  <section class="detail-tabs"><h2>Product Description</h2><p>{{ product.description }}</p></section>
+  {% else %}<div class="empty-shop"><h2>Product not found.</h2></div>{% endif %}
+</main>
+{% endblock %}

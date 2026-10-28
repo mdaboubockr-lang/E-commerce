@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit review | Shop</title>
+    <link rel="stylesheet" href="{% static 'css/reviews/review_form.css' %}" />
+</head>
+
+<body>
+    <main class="page">
+        <section class="panel">
+            <h1>Edit your review</h1>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+                {% endfor %}
+                <div class="actions">
+                    <button type="submit">Save changes</button>
+                    <a class="cancel" href="{% url 'product_detail' pk=review.product.pk %}">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+
+</html>
